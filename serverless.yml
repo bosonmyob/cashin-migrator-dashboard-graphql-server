@@ -1,0 +1,130 @@
+service: cashin-migrator-dashboard-graphql
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-southeast-2'}
+  stackName: ${self:provider.stage}-${self:service}
+  environment:
+    STAGE: ${self:provider.stage}
+    REGION: ${self:provider.region}
+    START_HOUR: 9
+    END_HOUR: 9
+  timeout: 30
+  apiGateway:
+    apiKeys:
+      - ${self:provider.stackName}-apiKey
+    usagePlan:
+      quota:
+        limit: 5000
+        offset: 2
+        period: MONTH
+      throttle:
+        burstLimit: 200
+        rateLimit: 100
+  resourcePolicy:
+    - Effect: Deny
+      Principal: '*'
+      Action: execute-api:Invoke
+      Resource:
+        - execute-api:/*/*/*
+      Condition:
+        NotIpAddress:
+          aws:SourceIp:
+            - 111.69.34.210/32
+            - 202.50.111.0/24
+            - 202.77.54.84/32
+            - 203.34.100.0/24
+            - 210.10.213.50/32
+            - 210.10.223.198/32
+            - 210.10.223.250/32
+            - 49.255.232.70/32
+            - 49.255.235.123/32
+            - 49.255.235.67/32
+            - 59.100.228.150/32
+            - 220.244.240.84/32 # my home ip address
+    - Effect: Allow
+      Principal: '*'
+      Action: execute-api:Invoke
+      Resource:
+        - execute-api:/*/*/*
+
+# you can add packaging information here
+package:
+  individually: true
+  exclude:
+    - .eslintrc.json
+    - .gitignore
+    - .nvmrc
+    - "*.md"
+    - "*.yml"
+
+functions:
+  CashInMigratorDashboardGraphql:
+    name: ${self:provider.stackName}-apollo
+    handler: server.graphqlHandler
+    description:
+    events:
+      # the root
+      - http:
+          path: /
+          method: get
+          # private: true
+          cors: true
+      - http:
+          path: /
+          method: post
+          # private: true
+          cors: true
+      # playground endpoint
+      - http:
+          path: playground
+          method: get
+          cors: true
+      - http:
+          path: playground
+          method: post
+          cors: true
+    package:
+      include:
+        - src/config.js
+        - lib/**
+    role:
+      Fn::GetAtt:
+        - CashInMigratorDashboardGraphqlRole
+        - Arn
+    # events:
+    environment:
+      MIGRATION_LEDGER: ${self:provider.stage}-Migration-Ledger
+      MIGRATION_INVOICE: ${self:provider.stage}-Migration-Invoice
+      MIGRATION_CUSTOMER: ${self:provider.stage}-Migration-Customer
+      INVOICE_STATUS: ${self:provider.stage}-Invoice-Status
+      CUSTOMER_STATUS: ${self:provider.stage}-Customer-Status
+      ROLLBACK_MIGRATION_LEDGER: ${self:provider.stage}-Rollback-Migration-Ledger
+      ROLLBACK_MIGRATION_INVOICE: ${self:provider.stage}-Rollback-Migration-Invoice
+      ROLLBACK_INVOICE_STATUS: ${self:provider.stage}-Rollback-Invoice-Status
+
+# you can add CloudFormation resource templates here
+resources:
+  Resources:
+    CashInMigratorDashboardGraphqlLambdaFunction:
+      Type: AWS::Lambda::Function
+
+    CashInMigratorDashboardGraphqlRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        RoleName: ${self:provider.stackName}-role
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+          - arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess
