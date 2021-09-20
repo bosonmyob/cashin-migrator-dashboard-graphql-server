@@ -6,8 +6,8 @@
   "scripts": {
     "clean:modules": "rm -rf node_modules && npm cache clean -f",
     "build": "npm run clean:modules && npm install --production",
-    "deploy:sit": "npm run build && ./ops/bin/deploy.sh SIT",
-    "deploy:prod": "npm run build && ./ops/bin/deploy.sh PROD",
+    "deploy:sit": "npm run build && ./ops/bin/deploy.sh sit",
+    "deploy:prod": "npm run build && ./ops/bin/deploy.sh prod",
     "coverage": "jest --coverage --verbose --silent",
     "lint:fix": "npx eslint -f codeframe --fix .",
     "lint": "eslint .",
