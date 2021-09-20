@@ -1,5 +1,5 @@
 const moment = require('moment-timezone');
-const { START_HOUR, DAY_DIFF } = require('../config');
+const { START_HOUR, DAY_DIFF } = require('../../config');
 
 const TIME_ZONE = 'Australia/Melbourne';
 

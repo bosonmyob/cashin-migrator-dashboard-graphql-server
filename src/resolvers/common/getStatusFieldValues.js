@@ -1,4 +1,4 @@
-const { FLOW, STATUSES } = require('../config');
+const { FLOW, STATUSES } = require('../../config');
 
 const _getStatusFields = flow =>
   flow === FLOW.MIGRATION
