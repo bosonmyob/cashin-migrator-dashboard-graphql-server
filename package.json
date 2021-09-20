@@ -14,7 +14,6 @@
   "author": "Boson Huang",
   "dependencies": {
     "apollo-server-lambda": "^3.3.0",
-    "lodash": "^4.17.21",
     "moment-timezone": "^0.5.33"
   },
   "devDependencies": {

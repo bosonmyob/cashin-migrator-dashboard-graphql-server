@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server-lambda');
-const schema = require('../schema/types.graphql');
+const typeDefs = require('../schema/schema.js');
 
 /**
  *
@@ -9,7 +9,7 @@ const schema = require('../schema/types.graphql');
  */
 const init = ({ resolvers }) => {
   return new ApolloServer({
-    typeDefs: gql`${schema}`,
+    typeDefs: gql`${typeDefs}`,
     resolvers,
     context: ({ event, context }) => ({
       headers: event.headers,
