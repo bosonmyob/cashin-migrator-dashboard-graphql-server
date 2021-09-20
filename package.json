@@ -4,7 +4,10 @@
   "description": "a graphql server for cashin migrator dashboard",
   "main": "server.js",
   "scripts": {
-    "build": "npm install && npm run lint && npm run test",
+    "clean:modules": "rm -rf node_modules && npm cache clean -f",
+    "build": "npm run clean:modules && npm install --production",
+    "deploy:sit": "npm run build && ./ops/bin/deploy.sh SIT",
+    "deploy:prod": "npm run build && ./ops/bin/deploy.sh PROD",
     "coverage": "jest --coverage --verbose --silent",
     "lint:fix": "npx eslint -f codeframe --fix .",
     "lint": "eslint .",
