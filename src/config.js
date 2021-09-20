@@ -19,16 +19,17 @@ module.exports.DATE_TIME_FORMAT = process.env?.DATE_TIME_FORMAT || 'YYYY-MM-DD H
 /**
  * Dynamo DB tables, loaded from lambda environment variables and given default values
  * Default values are not required. Expected to throw an error if the DB is undefined
+ * If running in local mode, it defaults to SIT database
  */
 module.exports.TABLES = Object.freeze({
-  MIGRATION_LEDGER: process.env?.MIGRATION_LEDGER,
-  MIGRATION_INVOICE: process.env?.MIGRATION_INVOICE,
-  MIGRATION_CUSTOMER: process.env?.MIGRATION_CUSTOMER,
-  INVOICE_STATUS: process.env?.INVOICE_STATUS,
-  CUSTOMER_STATUS: process.env?.CUSTOMER_STATUS,
-  ROLLBACK_MIGRATION_LEDGER: process.env?.ROLLBACK_MIGRATION_LEDGER,
-  ROLLBACK_MIGRATION_INVOICE: process.env?.ROLLBACK_MIGRATION_INVOICE,
-  ROLLBACK_INVOICE_STATUS: process.env?.ROLLBACK_INVOICE_STATUS
+  MIGRATION_LEDGER: process.env?.MIGRATION_LEDGER || 'sit-Migration-Ledger',
+  MIGRATION_INVOICE: process.env?.MIGRATION_INVOICE || 'sit-Migration-Invoice',
+  MIGRATION_CUSTOMER: process.env?.MIGRATION_CUSTOMER || 'sit-Migration-Customer',
+  INVOICE_STATUS: process.env?.INVOICE_STATUS || 'sit-Invoice-Status',
+  CUSTOMER_STATUS: process.env?.CUSTOMER_STATUS || 'sit-Customer-Status',
+  ROLLBACK_MIGRATION_LEDGER: process.env?.ROLLBACK_MIGRATION_LEDGER || 'sit-Rollback-Migration-Ledger',
+  ROLLBACK_MIGRATION_INVOICE: process.env?.ROLLBACK_MIGRATION_INVOICE || 'sit-Rollback-Migration-Invoice',
+  ROLLBACK_INVOICE_STATUS: process.env?.ROLLBACK_INVOICE_STATUS || 'sit-Rollback-Invoice-Status'
 });
 
 /**

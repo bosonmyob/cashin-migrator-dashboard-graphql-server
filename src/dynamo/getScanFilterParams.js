@@ -4,8 +4,14 @@
  * @returns
  */
 const getScanFilterParams = fields => {
+  // if no fields passed in
+  if (fields.length === 0) {
+    return {};
+  }
+
   const filters = [];
-  const names = {}; const values = {};
+  const names = {};
+  const values = {};
 
   fields.forEach(field => {
     const { key, expression, value, ops } = field;

@@ -1,5 +1,8 @@
 const { ApolloServer, gql } = require('apollo-server-lambda');
-const typeDefs = require('../schema/schema.js');
+const { ApolloServer: ApolloServerLocal } = require('apollo-server');
+const schema = require('../schema/schema.js');
+
+const typeDefs = gql`${schema}`;
 
 /**
  *
@@ -7,9 +10,9 @@ const typeDefs = require('../schema/schema.js');
  * @param {Object} params.resolvers
  * @returns
  */
-const init = ({ resolvers }) => {
-  return new ApolloServer({
-    typeDefs: gql`${typeDefs}`,
+const init = ({ resolvers }) =>
+  new ApolloServer({
+    typeDefs,
     resolvers,
     context: ({ event, context }) => ({
       headers: event.headers,
@@ -18,6 +21,20 @@ const init = ({ resolvers }) => {
       context
     })
   });
-};
 
-module.exports = init;
+/**
+ *
+ * @param {Object} params
+ * @param {Object} params.resolvers
+ * @returns
+ */
+const initLocal = ({ resolvers }) =>
+  new ApolloServerLocal({
+    typeDefs,
+    resolvers
+  });
+
+module.exports = {
+  init,
+  initLocal
+};

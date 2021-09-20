@@ -36,13 +36,12 @@ const _scan = async (options) => {
  * @param {object} params
  * @param {object} params.payload
  */
-const scanDB = async ({ tableName, filter, names, values }) => {
-  return await _scan({
+const scanDB = async ({ tableName, filter, names, values }) =>
+  await _scan({
     TableName: tableName,
     FilterExpression: filter,
     ExpressionAttributeNames: names,
     ExpressionAttributeValues: values
   });
-};
 
 module.exports = scanDB;
