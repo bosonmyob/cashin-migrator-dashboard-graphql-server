@@ -8,5 +8,5 @@ type Migration {
   status: String
   skipped: Boolean
   callbackNotified: Boolean
-  timestamp: String
+  dateTime: String
 }

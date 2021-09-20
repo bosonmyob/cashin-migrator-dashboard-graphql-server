@@ -1,9 +1,9 @@
 const moment = require('moment-timezone');
-const { START_HOUR } = require('../config');
+const { START_HOUR, DAY_DIFF } = require('../config');
 
 const TIME_ZONE = 'Australia/Melbourne';
 
-const _getDefaultTimestamp = (hour, dayDiff = 0) => {
+const _getDefaultTimestamp = (hour, dayDiff) => {
   const timestamp = moment()
     .add(dayDiff, 'day')
     .tz(TIME_ZONE)
@@ -13,10 +13,10 @@ const _getDefaultTimestamp = (hour, dayDiff = 0) => {
   return timestamp;
 };
 
-const getTimestamp = date => {
+const getTimestamp = (date, dayDiff = DAY_DIFF) => {
   return date
     ? moment(date).tz(TIME_ZONE).valueOf()
-    : _getDefaultTimestamp(START_HOUR, 1);
+    : _getDefaultTimestamp(START_HOUR, dayDiff);
 };
 
 module.exports = getTimestamp;

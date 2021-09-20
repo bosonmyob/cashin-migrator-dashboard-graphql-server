@@ -11,6 +11,10 @@ module.exports.STAGE = process.env?.STAGE || 'dev';
 module.exports.START_HOUR = process.env?.START_HOUR || 9;
 // start hour is 9.00 AM the current day
 module.exports.END_HOUR = process.env?.END_HOUR || 9;
+// setting a day difference for default get timestamp
+module.exports.DAY_DIFF = process.env?.DAY_DIFF || 3;
+// date time format
+module.exports.DATE_TIME_FORMAT = process.env?.DATE_TIME_FORMAT || 'YYYY-MM-DD HH:mm:ss';
 
 /**
  * Dynamo DB tables, loaded from lambda environment variables and given default values
@@ -25,6 +29,14 @@ module.exports.TABLES = Object.freeze({
   ROLLBACK_MIGRATION_LEDGER: process.env?.ROLLBACK_MIGRATION_LEDGER,
   ROLLBACK_MIGRATION_INVOICE: process.env?.ROLLBACK_MIGRATION_INVOICE,
   ROLLBACK_INVOICE_STATUS: process.env?.ROLLBACK_INVOICE_STATUS
+});
+
+/**
+ * variable to determine which table(s) to query data
+ */
+module.exports.FLOW = Object.freeze({
+  MIGRATION: 'migration',
+  ROLLBACK: 'rollback'
 });
 
 /**
