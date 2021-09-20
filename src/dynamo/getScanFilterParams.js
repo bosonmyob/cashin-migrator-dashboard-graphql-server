@@ -1,6 +1,6 @@
 /**
  *
- * @param {object} fields
+ * @param {Array} fields
  * @returns
  */
 const getScanFilterParams = fields => {

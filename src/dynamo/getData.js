@@ -7,12 +7,10 @@ const getDataFromDynamoDB = async ({
   startTimestamp,
   endTimestamp,
   flow
-}) => {
-  const fields = getScanFilters({ startTimestamp, endTimestamp });
-  const { filter, names, values } = getScanFilterParams({ fields });
-  const tableName = getTableName(flow);
-
-  return await scanDB({ tableName, filter, names, values });
-};
+}) =>
+  await scanDB({
+    tableName: getTableName(flow),
+    ...getScanFilterParams(getScanFilters({ startTimestamp, endTimestamp }))
+  });
 
 module.exports = getDataFromDynamoDB;
