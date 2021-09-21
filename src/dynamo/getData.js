@@ -6,9 +6,11 @@ const scanDB = require('./scanDB');
 const getDataFromDynamoDB = async ({
   startTimestamp,
   endTimestamp,
-  flow
+  flow,
+  dbClient
 }) =>
   await scanDB({
+    dbClient,
     tableName: getTableName(flow),
     ...getScanFilterParams(getScanFilters({ startTimestamp, endTimestamp }))
   });

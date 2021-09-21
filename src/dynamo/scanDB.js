@@ -1,22 +1,15 @@
-const AWS = require('aws-sdk');
-const { REGION } = require('../config');
-
-const _getDocDBClient = () =>
-  new AWS.DynamoDB.DocumentClient({
-    region: REGION
-  });
-
 /**
  *
  * @param {object} options
  */
-const _scan = async (options) => {
-  const docDBClient = _getDocDBClient();
+const _scan = async ({ dbClient, ...options }) => {
   let hasMore = true;
   let items = [];
 
+  console.log({ dbQuery: options });
+
   while (hasMore) {
-    const result = await docDBClient.scan(options).promise();
+    const result = await dbClient.scan(options).promise();
     const resItems = result?.Items || [];
 
     if (result.LastEvaluatedKey) {
@@ -36,8 +29,9 @@ const _scan = async (options) => {
  * @param {object} params
  * @param {object} params.payload
  */
-const scanDB = async ({ tableName, filter, names, values }) =>
+const scanDB = async ({ dbClient, tableName, filter, names, values }) =>
   await _scan({
+    dbClient,
     TableName: tableName,
     FilterExpression: filter,
     ExpressionAttributeNames: names,

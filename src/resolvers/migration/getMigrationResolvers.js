@@ -3,15 +3,16 @@ const buildMigrationData = require('./buildMigrationData');
 const getDataFromDynamoDB = require('../../dynamo/getData');
 const getTimestamp = require('./getTimestamp');
 
-const _getMigratedLedgers = async queryParams => {
+const _getMigratedLedgers = async ({ args, context }) => {
   const timestamps = {
-    startDate: queryParams?.startDate || '',
-    endDate: queryParams?.endDate || ''
+    startDate: args?.startDate || '',
+    endDate: args?.endDate || ''
   };
 
   const migratedLedgers = await getDataFromDynamoDB({
     flow: FLOW.MIGRATION,
-    ...getTimestamp(timestamps)
+    ...getTimestamp(timestamps),
+    ...context
   });
 
   return migratedLedgers.map(buildMigrationData);
@@ -19,8 +20,9 @@ const _getMigratedLedgers = async queryParams => {
 
 const getMigrationResolvers = () => ({
   Query: {
-    migration: async (parents, queryParams) =>
-      await _getMigratedLedgers(queryParams)
+    migration: async (parents, args, context, info) => {
+      return await _getMigratedLedgers({ args, context });
+    }
   }
 });
 

@@ -4,16 +4,18 @@ const { init, initLocal } = require('./src/apollo');
 
 const resolvers = getResolvers(FLOW.MIGRATION);
 
+const startServer = (server) => {
+  if (server) {
+    server.listen().then(({ url }) => console.log(`🚀  Server ready at ${url}`));
+  } else {
+    const server = init({ resolvers });
+    return server.createHandler();
+  }
+};
+
+exports.graphqlHandler = startServer();
+
 if (STAGE === 'local') {
   const server = initLocal({ resolvers });
-
-  server.listen().then(({ url }) => console.log(`🚀  Server ready at ${url}`));
-} else {
-  const cors = {
-    origin: '*',
-    credentials: true
-  };
-  const server = init({ resolvers });
-
-  exports.graphqlHandler = server.createHandler({ cors });
+  startServer(server);
 }
