@@ -1,0 +1,35 @@
+{
+  "name": "cashin-migrator-dashboard-graphql-server",
+  "version": "0.1.0",
+  "description": "a graphql server for cashin migrator dashboard",
+  "main": "server.js",
+  "scripts": {
+    "clean:modules": "rm -rf node_modules && npm cache clean -f",
+    "build": "npm run clean:modules && npm install --production",
+    "deploy:sit": "npm run build && ./ops/bin/deploy.sh sit",
+    "deploy:prod": "npm run build && ./ops/bin/deploy.sh prod",
+    "coverage": "jest --coverage --verbose --silent",
+    "lint:fix": "npx eslint -f codeframe --fix .",
+    "lint": "eslint .",
+    "test": "npm run nvm-check && jest --config jest.config.json --silent",
+    "nvm-check": "node nvm-check.js",
+    "start": "npm run nvm-check && STAGE=local nodemon --ext js server.js"
+  },
+  "author": "Boson Huang",
+  "dependencies": {
+    "apollo-server-lambda": "^3.3.0",
+    "moment-timezone": "^0.5.33"
+  },
+  "devDependencies": {
+    "apollo-server": "^3.3.0",
+    "aws-sdk": "^2.991.0",
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12",
+    "semver": "^7.3.5"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0"
+  }
+}

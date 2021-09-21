@@ -1,0 +1,8 @@
+type Migration {
+  id: String
+  companyId: String
+  status: String
+  skipped: Boolean
+  callbackNotified: Boolean
+  dateTime: String
+}
