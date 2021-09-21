@@ -13,9 +13,14 @@ const _getDefaultTimestamp = (hour, dayDiff) => {
   return timestamp;
 };
 
-const getTimestamp = (date, dayDiff = DAY_DIFF) =>
+const _getTimestamp = (date, dayDiff = DAY_DIFF) =>
   date
     ? moment(date).tz(TIME_ZONE).valueOf()
     : _getDefaultTimestamp(START_HOUR, dayDiff);
+
+const getTimestamp = ({ startDate, endDate }) => ({
+  startTimestamp: _getTimestamp(startDate),
+  endTimestamp: _getTimestamp(endDate, 0)
+});
 
 module.exports = getTimestamp;

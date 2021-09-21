@@ -1,14 +1,10 @@
-const { FLOW } = require('../config');
-const getMigrationResolvers = require('./migration/getMigrationResolvers');
+const getMigration = require('./migration/getMigration');
 
-/**
- *
- * @param {String} flow
- * @returns
- */
-const getResolvers = flow =>
-  flow === FLOW.MIGRATION
-    ? getMigrationResolvers()
-    : null;
+const getResolvers = () => ({
+  Query: {
+    migration: async (parents, args, context) =>
+      await getMigration({ parents, args, context })
+  }
+});
 
 module.exports = getResolvers;

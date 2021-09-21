@@ -1,25 +1,41 @@
 const typeDefs = `
   type Query {
-    migration(startDate: String, endDate: String): [Ledgers]
-    ledger(jobId: String, migratedBusinessId: String, businessUid: String): Ledger
+    migration (
+        startDate: String,
+        endDate: String
+        skipped: Boolean
+        status: String
+      ): [MigrationLedger]
+    migratedLedger (
+        jobId: String,
+        migratedBusinessId: String,
+        businessUid: String,
+        serialNumber: String
+      ): MigratedLedger
   }
 
-  type Ledgers {
-    id: String!
-    companyId: String!
-    status: String
-    skipped: Boolean
-    callbackNotified: Boolean
+  type MigrationLedger {
+    skipped: Boolean!
+    status: String!
+    callbackNotified: Boolean!
     dateTime: String!
+    ledger: MigratedLedger!
   }
 
-  type Ledger {
+  type MigratedLedger {
     id: String!
-    companyId: String!
-    status: String
-    skipped: Boolean
-    callbackNotified: Boolean
-    dateTime: String!
+    migratedBusinessId: String!
+    businessUid: String!
+    serialNumber: String!
+    status: MigratedLedgerStatus!
+  }
+
+  type MigratedLedgerStatus {
+    logParseStatus: String!
+    paymentConfig: String!
+    customers: String!
+    invoices: String!
+    reminderBusinessPreference: String!
   }
 `;
 

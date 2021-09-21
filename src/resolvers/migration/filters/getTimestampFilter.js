@@ -1,10 +1,10 @@
 /**
  *
- * @param {object} params
- * @param {number} params.startTimestamp
- * @param {number} params.endTimestamp
+ * @param {Object} params
+ * @param {String} params.startDate
+ * @param {String} params.endDate
  */
-const getScanFilters = ({ startTimestamp, endTimestamp }) => [
+const getTimeStampFilter = ({ startTimestamp, endTimestamp }) => [
   {
     key: 'timestamp',
     expression: 'startTimestamp',
@@ -19,4 +19,4 @@ const getScanFilters = ({ startTimestamp, endTimestamp }) => [
   }
 ];
 
-module.exports = getScanFilters;
+module.exports = getTimeStampFilter;
