@@ -32,8 +32,6 @@ const getMigration = async ({ parents, args, context }) => {
     endDate: args?.endDate || ''
   };
 
-  console.log({ args });
-
   const migratedLedgers = await _getDataFromDynamoDB({
     ...getTimestamp(timestamps),
     ...args,

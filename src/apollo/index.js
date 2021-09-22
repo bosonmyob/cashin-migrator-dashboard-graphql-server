@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const { REGION } = require('../config.js');
 const { ApolloServer, gql } = require('apollo-server-lambda');
 const schema = require('../schema/schema.js');
+const logger = require('./plugins/logger.js');
 
 const typeDefs = gql`${schema}`;
 
@@ -29,7 +30,10 @@ const init = ({ resolvers }) =>
     cors: {
       origin: '*',
       credentials: true
-    }
+    },
+    plugins: [
+      logger
+    ]
   });
 
 /**
@@ -47,7 +51,10 @@ const initLocal = ({ resolvers }) => {
       resolvers,
       context: () => ({
         dbClient
-      })
+      }),
+      plugins: [
+        logger
+      ]
     });
   } catch ({ errorMessage = 'unexpected error when initLocal' }) {
     console.log(errorMessage);
