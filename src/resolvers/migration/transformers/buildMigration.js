@@ -1,5 +1,3 @@
-const buildMigrationLedger = require('./buildMigrationLedger');
-
 /**
  *
  * @param {Object} params
@@ -12,7 +10,7 @@ const buildMigration = ({ startTime, endTime, ledgers }) => ({
   startTime,
   endTime,
   count: ledgers.length,
-  ledgers: ledgers.map(buildMigrationLedger)
+  ledgers: ledgers
 });
 
 module.exports = buildMigration;

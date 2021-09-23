@@ -1,17 +1,4 @@
-const STATUS = Object.freeze({
-  FAILED: {
-    name: 'Failed',
-    values: [-2]
-  },
-  PENDING: {
-    name: 'Pending',
-    values: [-1, 0, 1]
-  },
-  SUCCESS: {
-    name: 'Success',
-    values: [2, 3]
-  }
-});
+const { STATUS } = require('../../config');
 
 /**
  *

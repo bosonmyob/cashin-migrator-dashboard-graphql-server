@@ -6,17 +6,28 @@ const getTableName = require('../../dynamo/getTableName');
 const getScanFilterParams = require('../../dynamo/getScanFilterParams');
 const scanDB = require('../../dynamo/scanDB');
 const buildMigration = require('./transformers/buildMigration');
+const buildMigrationLedger = require('./transformers/buildMigrationLedger');
 
-const _getDataFromDynamoDB = async ({
-  startTimestamp,
-  endTimestamp,
+const _filterStatus = (ledgers, status) =>
+  ledgers.filter(ledger => ledger.status.toLowerCase() === status.toLowerCase());
+
+const _getMigration = async ({
+  startDate = '',
+  endDate = '',
+  status = '',
   skipped,
   dbClient
 }) => {
+  const {
+    startTime,
+    endTime,
+    startTimestamp,
+    endTimestamp
+  } = getTimestamp(startDate, endDate);
   const timestampFilter = getTimeStampFilter({ startTimestamp, endTimestamp });
   const skippedFilter = getSkippedFilter(skipped);
 
-  return await scanDB({
+  const data = await scanDB({
     dbClient,
     tableName: getTableName(FLOW.MIGRATION),
     ...getScanFilterParams([
@@ -24,18 +35,28 @@ const _getDataFromDynamoDB = async ({
       ...skippedFilter
     ])
   });
+
+  const ledgers = data.map(buildMigrationLedger);
+  const migration = {
+    startTime,
+    endTime,
+    ledgers
+  };
+
+  if (status && ledgers.length) {
+    migration.ledgers = _filterStatus(ledgers, status);
+  }
+
+  return migration;
 };
 
 const getMigration = async ({ args, context }) => {
-  const dates = getTimestamp(args?.startDate || '', args?.endDate || '');
-
-  const migratedLedgers = await _getDataFromDynamoDB({
-    ...dates,
+  const migration = await _getMigration({
     ...args,
     ...context
   });
 
-  return buildMigration({ ...dates, ledgers: migratedLedgers });
+  return buildMigration(migration);
 };
 
 module.exports = getMigration;

@@ -73,3 +73,21 @@ module.exports.STATS_CONFIG = Object.freeze({
     CALLBACK_NOTIFIED: ['notified', 'notNotified']
   }
 });
+
+/**
+ * status for migration/rollback job/invoice/customer/etc.
+ */
+module.exports.STATUS = Object.freeze({
+  FAILED: {
+    name: 'Failed',
+    values: [-2]
+  },
+  PENDING: {
+    name: 'Pending',
+    values: [-1, 0, 1]
+  },
+  SUCCESS: {
+    name: 'Success',
+    values: [2, 3]
+  }
+});
