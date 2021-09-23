@@ -9,6 +9,7 @@ const getMigratedBusinessIdFilter = require('./filters/getMigratedBusinessIdFilt
 const getBusinessUidFilter = require('./filters/getBusinessUidFilter');
 const getSerialNumberFilter = require('./filters/getSerialNumberFilter');
 const getJobIdFilter = require('./filters/getJobIdFilter');
+const { validate } = require('uuid');
 
 const _validateQueryParams = ({
   jobId,
@@ -16,7 +17,7 @@ const _validateQueryParams = ({
   businessUid,
   serialNumber
 }) =>
-  jobId || migratedBusinessId || businessUid || serialNumber;
+  validate(jobId) || validate(migratedBusinessId) || businessUid || serialNumber;
 
 const _getMigratedLedger = async ({
   dbClient,
@@ -28,6 +29,7 @@ const _getMigratedLedger = async ({
   const tableName = getTableName(FLOW.MIGRATION);
 
   if (!_validateQueryParams({ jobId, migratedBusinessId, businessUid, serialNumber })) {
+    console.log('failed query params validation');
     return false;
   }
 
