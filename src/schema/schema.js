@@ -12,22 +12,22 @@ const typeDefs = `
         migratedBusinessId: String,
         businessUid: String,
         serialNumber: String
-      ): MigratedLedger
+      ): [MigratedLedger!]
   }
 
   type Migration {
     startTime: String!
     endTime: String!
     count: Int!
-    ledgers: [MigrationLedger!]
+    records: [MigrationRecord!]
   }
 
-  type MigrationLedger {
+  type MigrationRecord {
     skipped: Boolean!
     status: String!
     callbackNotified: Boolean!
     dateTime: String!
-    ledger: MigratedLedger!
+    record: MigratedLedger!
   }
 
   type MigratedLedger {

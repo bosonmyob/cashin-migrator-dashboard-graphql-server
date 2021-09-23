@@ -12,11 +12,11 @@ const _filterStatus = (ledgers, status) =>
   ledgers.filter(ledger => ledger.status.toLowerCase() === status.toLowerCase());
 
 const _getMigration = async ({
+  dbClient,
   startDate = '',
   endDate = '',
   status = '',
-  skipped,
-  dbClient
+  skipped
 }) => {
   const {
     startTime,
@@ -40,11 +40,11 @@ const _getMigration = async ({
   const migration = {
     startTime,
     endTime,
-    ledgers
+    records: ledgers
   };
 
   if (status && ledgers.length) {
-    migration.ledgers = _filterStatus(ledgers, status);
+    migration.records = _filterStatus(ledgers, status);
   }
 
   return migration;

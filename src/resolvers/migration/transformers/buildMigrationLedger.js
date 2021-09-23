@@ -24,7 +24,7 @@ const buildMigrationLedger = migratedLedger => {
     status,
     callbackNotified,
     dateTime,
-    ledger: buildMigratedLedger(migratedLedger)
+    record: buildMigratedLedger(migratedLedger)
   };
 };
 

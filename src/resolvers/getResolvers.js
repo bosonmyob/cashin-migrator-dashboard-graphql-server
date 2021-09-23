@@ -1,16 +1,16 @@
+const getMigratedLedger = require('./migration/getMigratedLedger');
 const getMigration = require('./migration/getMigration');
 
 const getResolvers = () => ({
   Query: {
     migration: async (parent, args, context) =>
       await getMigration({ args, context }),
-    migratedLedger: async (parent, args, context) => {
-
-    }
+    migratedLedger: async (parent, args, context) =>
+      await getMigratedLedger({ args, context })
   },
   Migration: {
-    ledgers (parent) {
-      return parent.ledgers;
+    records (parent) {
+      return parent.records;
     }
   }
 });

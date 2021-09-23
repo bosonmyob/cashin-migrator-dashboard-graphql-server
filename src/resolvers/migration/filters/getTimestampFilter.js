@@ -4,7 +4,7 @@
  * @param {String} params.startDate
  * @param {String} params.endDate
  */
-const getTimeStampFilter = ({ startTimestamp, endTimestamp }) => [
+const getTimeStampFilter = ({ startTimestamp, endTimestamp }) => (startTimestamp && endTimestamp) ? [
   {
     key: 'timestamp',
     expression: 'startTimestamp',
@@ -17,6 +17,6 @@ const getTimeStampFilter = ({ startTimestamp, endTimestamp }) => [
     value: endTimestamp,
     ops: '<='
   }
-];
+] : [];
 
 module.exports = getTimeStampFilter;
