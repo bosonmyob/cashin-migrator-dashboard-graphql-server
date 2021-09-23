@@ -4,7 +4,8 @@ const typeDefs = `
         startDate: String,
         endDate: String
         skipped: Boolean
-        status: String
+        status: String,
+        notified: Boolean
       ): Migration!
 
     migratedLedger (

@@ -1,10 +1,8 @@
 /**
  *
- * @param {Object} params
- * @param {String} params.startDate
- * @param {String} params.endDate
+ * @param {Boolean} skipped
  */
-const getSkippedFilter = (skipped) => skipped
+const getSkippedFilter = skipped => typeof skipped === 'boolean'
   ? [
     {
       key: 'skip_ledger_migration',

@@ -2,6 +2,7 @@ const { FLOW } = require('../../config');
 const getTimestamp = require('../common/getTimestamp');
 const getTimeStampFilter = require('./filters/getTimestampFilter');
 const getSkippedFilter = require('./filters/getSkippedFilter');
+const getCallbackNotifiedFilter = require('./filters/getCallbackNotifiedFilter');
 const getTableName = require('../../dynamo/getTableName');
 const getScanFilterParams = require('../../dynamo/getScanFilterParams');
 const scanDB = require('../../dynamo/scanDB');
@@ -16,7 +17,8 @@ const _getMigration = async ({
   startDate = '',
   endDate = '',
   status = '',
-  skipped
+  notified = '',
+  skipped = ''
 }) => {
   const {
     startTime,
@@ -24,15 +26,14 @@ const _getMigration = async ({
     startTimestamp,
     endTimestamp
   } = getTimestamp(startDate, endDate);
-  const timestampFilter = getTimeStampFilter({ startTimestamp, endTimestamp });
-  const skippedFilter = getSkippedFilter(skipped);
 
   const data = await scanDB({
     dbClient,
     tableName: getTableName(FLOW.MIGRATION),
     ...getScanFilterParams([
-      ...timestampFilter,
-      ...skippedFilter
+      ...getTimeStampFilter({ startTimestamp, endTimestamp }),
+      ...getSkippedFilter(skipped),
+      ...getCallbackNotifiedFilter(notified)
     ])
   });
 
