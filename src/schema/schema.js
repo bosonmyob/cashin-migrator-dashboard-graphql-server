@@ -5,13 +5,21 @@ const typeDefs = `
         endDate: String
         skipped: Boolean
         status: String
-      ): [MigrationLedger]
+      ): Migration!
+
     migratedLedger (
         jobId: String,
         migratedBusinessId: String,
         businessUid: String,
         serialNumber: String
       ): MigratedLedger
+  }
+
+  type Migration {
+    startTime: String!
+    endTime: String!
+    count: Int!
+    ledgers: [MigrationLedger!]
   }
 
   type MigrationLedger {
