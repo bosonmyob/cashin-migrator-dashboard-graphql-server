@@ -6,8 +6,6 @@ const _scan = async ({ dbClient, ...options }) => {
   let hasMore = true;
   let items = [];
 
-  console.log({ dbQuery: options });
-
   while (hasMore) {
     const result = await dbClient.scan(options).promise();
     const resItems = result?.Items || [];
